@@ -1,19 +1,20 @@
 /******************************************************************************
  * @file:	vault.h
- * @brief:	The vault logic library
+ * @brief:	The hash logic library
  * @author:	Nathan Melegari
  * @date:	04-25-2026
  * @version:	1.0
 ******************************************************************************/
 
 
-#ifndef HASH_H
-#define HASH_H
+#ifndef CRYPTO_H
+#define CRYPTO_H
 
 
 #include <stdio.h>
+#include <stdbool.h>
 
-char *hash_password(char *full_password);
-
+void bkey_hash_passwd(const char *passwd, char *hash);
+bool bkey_verify_hash_to_passwd(char *hash, char *passwd);
 
 #endif

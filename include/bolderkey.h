@@ -10,9 +10,9 @@
 #define BOLDERKEY_H
 
 
-#include "passwr_maker.h"
+#include "passwd.h"
 #include "vault.h"
-#include "hash.h"
+#include "crypto.h"
 
 
 #endif

@@ -1,4 +1,4 @@
-# BolderKey engine v0.1.0
+# BolderKey engine v0.8.1
 
 This is the password and vault file generator that runs under BolderKey. The "engine" is responsible for creating passwords, inserting them into a file, generating a hash, encrypting them, and finally storing them in a vault on the client's device.
 
@@ -17,8 +17,7 @@ cmake --build .
 
 ## Roadmap
 
-- Password hash in 'src/core/hash.c' (hash, decrypt and verify)
-- Addon for Node.js
+- Implement an access key generator function in src/core/crypto.c
 
 ## Because what to use BolderKey
 

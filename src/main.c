@@ -3,53 +3,49 @@
  * @brief:	Care of the main usage loop of BolderKey core
  * @author:	Nathan Melegari
  * @date:	04-22-2026
- * @version:	1.0
+ * @version:	1.2.0
 ******************************************************************************/
 
-
-#include "main.h"
+#include "../include/bolderkey.h"
+#include <sodium/crypto_pwhash.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sodium.h>
 
 
-int main(int argc, char *args[]) {
+int main(int argc, char *argv[]) {
 
 	if(argc < 2) {
 		fprintf(stderr, "Pass the correct values!");
 		
 	}
 
-	if(strcmp(args[1], "") == 0) args[1] = "bolderkey-lts";
+	if(strcmp(argv[1], "") == 0) argv[1] = "bolderkey-lts";
 
-	////////////////////////////
-	// Get the arguments follow
-	char *vault_path = args[1];
-	char *passwr_t = args[2];
-	char *passwr_s = args[3];
 
-	char *full_password = make_a_password(atoi(passwr_s));
-	bool v_exists = vault_exists(vault_path);
-	FILE *vault_file = fopen(vault_path, "r");
+	char *vault_path = argv[1];
+	char *passwd_t = argv[2];
+	char *passwd_s = argv[3];
 
-	if(v_exists == true) {
 
-		insert_vault(vault_file, vault_path, passwr_t, full_password);
-	//	encrypt_password(vault_file, passwr_t, full_password);
+	char *ret_passwd;
+	bkey_passwd_maker(atoi(passwd_s), ret_passwd);
+
+	char ret_passwd_hash[crypto_pwhash_STRBYTES];
+	bkey_hash_passwd(ret_passwd, ret_passwd_hash);
+
+
+	if(bkey_vault_exists(vault_path) != true) {
+
+		bkey_vault_maker(vault_path);
+		bkey_vault_insert(vault_path, passwd_t, ret_passwd_hash);
 	}
 	else {
-		vault_make(vault_file, vault_path);
-		insert_vault(vault_file, vault_path, passwr_t, full_password);
-
-		// Create a access key to vault
-		char *key = key_access_vault(vault_path);
-		printf("%s", key);
-	//	encrypt_password(vault_file, passwr_t, full_password);
+	
+		bkey_vault_insert(vault_path, passwd_t, ret_passwd_hash);
 	}
-
-	printf("%s\n", full_password);
-	printf("\033[H\033[2J");
 
 	return 0;
 }
